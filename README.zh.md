@@ -12,16 +12,26 @@ AI 编程 Agent 写代码的速度远超人类阅读的速度。出问题时,人
 
 ## 快速开始
 
-需要 Python 3.9+,无需安装任何依赖包。
+需要 Python 3.9+,没有第三方依赖。
+
+```bash
+pip install git+https://github.com/BlackCat-art/codelens.git@v0.2.1
+
+# 1. 生成项目地图
+codelens map /path/to/your/project -o CODELENS.md
+
+# 2. 追踪某个函数:谁调用了它,它又调用了谁
+codelens trace /path/to/your/project function_name -d 3
+```
+
+### 从源码运行
+
+也可以不安装,直接运行:
 
 ```bash
 git clone https://github.com/BlackCat-art/codelens.git
 cd codelens
-
-# 1. 生成项目地图
 python codelens.py map /path/to/your/project -o CODELENS.md
-
-# 2. 追踪某个函数:谁调用了它,它又调用了谁
 python codelens.py trace /path/to/your/project function_name -d 3
 ```
 
@@ -30,8 +40,8 @@ python codelens.py trace /path/to/your/project function_name -d 3
 报告支持中文和英文。用 `--lang zh` 或 `--lang en` 指定。默认是 `--lang auto`:当环境变量 `LC_ALL` 或 `LANG` 以 `zh` 开头时输出中文,否则输出英文。
 
 ```bash
-python codelens.py map /path/to/your/project --lang zh
-python codelens.py trace /path/to/your/project function_name --lang en
+codelens map /path/to/your/project --lang zh
+codelens trace /path/to/your/project function_name --lang en
 ```
 
 只有 CodeLens 自己生成的文字会被翻译。模块说明来自你代码里的 docstring,不会被翻译。
