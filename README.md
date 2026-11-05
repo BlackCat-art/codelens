@@ -23,9 +23,20 @@ python codelens.py map /path/to/your/project -o CODELENS.md
 python codelens.py trace /path/to/your/project function_name -d 3
 ```
 
+### Report language
+
+Reports are available in English and Chinese. Use `--lang en` or `--lang zh`. The default is `--lang auto`, which picks Chinese when `LC_ALL` or `LANG` starts with `zh` and English otherwise.
+
+```bash
+python codelens.py map /path/to/your/project --lang zh
+python codelens.py trace /path/to/your/project function_name --lang en
+```
+
+Only the text CodeLens generates is translated. Module descriptions come from your own docstrings.
+
 ## Example output
 
-The report below comes from a small demo "shop" project with typical AI-written problems planted on purpose. The full file is [examples/CODELENS.example.md](examples/CODELENS.example.md). Report text is currently in Chinese.
+The report below comes from a small demo "shop" project in [examples/demo](examples/demo) with typical AI-written problems planted on purpose. Full reports: [English](examples/CODELENS.example.en.md) | [中文](examples/CODELENS.example.zh.md).
 
 Smell checklist (section 4):
 
@@ -69,6 +80,15 @@ Each line includes `path:line`, so you can walk the chain by hand in your editor
 - Imports are resolved relative to the directory you pass in, so run CodeLens on your project's top-level source root.
 - It is static analysis: it knows nothing about runtime values or business intent.
 - The hotspot scoring weights are heuristic and have not been tuned on many real projects.
+
+## Testing
+
+```bash
+pip install pytest
+pytest
+```
+
+The tests run the tool on the demo project in both languages and check the findings, the dependency graph, `trace` output, and that the English and Chinese string tables stay in sync.
 
 ## Roadmap
 
