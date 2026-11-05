@@ -74,3 +74,29 @@ def test_auto_lang_from_env():
 
 def test_not_found():
     assert "not found" in run("trace", ".", "nope", "--lang", "en").stdout
+
+
+def read(name):
+    with open(os.path.join(HERE, name), encoding="utf-8") as f:
+        return f.read()
+
+
+def test_version_flag_matches_module():
+    r = run("--version")
+    assert r.returncode == 0, r.stderr
+    assert r.stdout.strip() == f"codelens {cl.__version__}"
+
+
+def test_version_is_semver():
+    assert re.fullmatch(r"\d+\.\d+\.\d+", cl.__version__)
+
+
+def test_pyproject_version_is_dynamic():
+    text = read("pyproject.toml")
+    assert 'dynamic = ["version"]' in text
+    assert not re.search(r"^version\s*=", text, re.M)
+
+
+def test_readme_pins_current_version():
+    for name in ("README.md", "README.zh.md"):
+        assert f"@v{cl.__version__}" in read(name), name
