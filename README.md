@@ -40,7 +40,7 @@ Only the text CodeLens generates is translated. Module descriptions come from yo
 
 The report below comes from a small demo "shop" project in [examples/demo](examples/demo) with typical AI-written problems planted on purpose. Full reports: [English](examples/CODELENS.example.en.md) | [中文](examples/CODELENS.example.zh.md).
 
-Smell checklist (section 4):
+Smell checklist (section 4, abridged):
 
 - `shop.services.inventory:6` swallowed exception (an `except` that does nothing hides bugs)
 - `shop.services.inventory:9` empty stub `reserve()`
@@ -49,13 +49,17 @@ Smell checklist (section 4):
 - `shop.services.payment:7` empty stub `refund_check()`
 - `calc_total` is defined twice (`inventory` and `pricing`), a likely duplicate implementation
 
-Trace of `check_stock`, showing how execution reaches it:
+Trace of `check_stock`, showing how execution reaches it (actual output):
 
 ```
-== shop.services.inventory.check_stock (./shop/services/inventory.py:3-7) ==
-Upstream:
+$ cd examples/demo
+$ python ../../codelens.py trace . check_stock --lang en
+
+== shop.services.inventory.check_stock (./shop/services/inventory.py:3-7) complexity=2 ==
+[Upstream: who calls it, to find the trigger path]
 └─ shop.services.orders.create_order (./shop/services/orders.py:4)
    └─ shop.app.main (./shop/app.py:4)
+[Downstream: what it calls, to find the fault]
 ```
 
 ## What the map contains

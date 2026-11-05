@@ -40,7 +40,7 @@ python codelens.py trace /path/to/your/project function_name --lang en
 
 下面的报告来自 [examples/demo](examples/demo) 里的一个小型“shop”演示项目,里面故意埋了几类 AI 常见问题。完整报告:[English](examples/CODELENS.example.en.md) | [中文](examples/CODELENS.example.zh.md)。
 
-疑点清单(第 4 节):
+疑点清单(第 4 节,有删减):
 
 - `shop.services.inventory:6` 吞掉异常(`except` 后什么都不做,bug 会被隐藏)
 - `shop.services.inventory:9` 空实现函数 `reserve()`
@@ -49,13 +49,17 @@ python codelens.py trace /path/to/your/project function_name --lang en
 - `shop.services.payment:7` 空实现函数 `refund_check()`
 - `calc_total` 被定义了两次(`inventory` 和 `pricing`),很可能是重复实现
 
-`check_stock` 的追踪结果,显示执行是怎么走到这里的:
+`check_stock` 的追踪结果,显示执行是怎么走到这里的(真实输出):
 
 ```
-== shop.services.inventory.check_stock (./shop/services/inventory.py:3-7) ==
+$ cd examples/demo
+$ python ../../codelens.py trace . check_stock --lang zh
+
+== shop.services.inventory.check_stock (./shop/services/inventory.py:3-7) 复杂度=2 ==
 【谁调用了它(上游,找触发路径)】
 └─ shop.services.orders.create_order (./shop/services/orders.py:4)
    └─ shop.app.main (./shop/app.py:4)
+【它调用了谁(下游,找出错点)】
 ```
 
 ## 地图里有什么
