@@ -12,16 +12,26 @@ AI coding agents produce code faster than people can read it. When something bre
 
 ## Quick start
 
-Requires Python 3.9+. No packages to install.
+Requires Python 3.9+. CodeLens has no third-party dependencies.
+
+```bash
+pip install git+https://github.com/BlackCat-art/codelens.git@v0.2.1
+
+# 1. Generate a project map
+codelens map /path/to/your/project -o CODELENS.md
+
+# 2. Trace a function: who calls it, and what it calls
+codelens trace /path/to/your/project function_name -d 3
+```
+
+### Run from source
+
+You can also run it without installing anything:
 
 ```bash
 git clone https://github.com/BlackCat-art/codelens.git
 cd codelens
-
-# 1. Generate a project map
 python codelens.py map /path/to/your/project -o CODELENS.md
-
-# 2. Trace a function: who calls it, and what it calls
 python codelens.py trace /path/to/your/project function_name -d 3
 ```
 
@@ -30,8 +40,8 @@ python codelens.py trace /path/to/your/project function_name -d 3
 Reports are available in English and Chinese. Use `--lang en` or `--lang zh`. The default is `--lang auto`, which picks Chinese when `LC_ALL` or `LANG` starts with `zh` and English otherwise.
 
 ```bash
-python codelens.py map /path/to/your/project --lang zh
-python codelens.py trace /path/to/your/project function_name --lang en
+codelens map /path/to/your/project --lang zh
+codelens trace /path/to/your/project function_name --lang en
 ```
 
 Only the text CodeLens generates is translated. Module descriptions come from your own docstrings.
