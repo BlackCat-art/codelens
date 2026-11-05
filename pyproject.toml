@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codelens"
+dynamic = ["version"]
+description = "Turn an AI-generated Python project into a map a human can read: entry points, dependency graph, hotspots, and call tracing."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "BlackCat-art" }]
+keywords = ["static-analysis", "code-review", "ai-generated-code", "ast", "developer-tools"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/BlackCat-art/codelens"
+Issues = "https://github.com/BlackCat-art/codelens/issues"
+
+[project.scripts]
+codelens = "codelens:main"
+
+[tool.setuptools]
+py-modules = ["codelens"]
+
+[tool.setuptools.dynamic]
+version = { attr = "codelens.__version__" }
