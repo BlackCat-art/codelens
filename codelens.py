@@ -6,7 +6,7 @@ Usage:
 """
 import ast, os, argparse, subprocess, collections
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 SKIP = {".git", "venv", ".venv", "node_modules", "__pycache__", "build", "dist"}
 
 STRINGS = {
