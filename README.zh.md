@@ -1,5 +1,7 @@
 # CodeLens
 
+[![tests](https://github.com/BlackCat-art/codelens/actions/workflows/test.yml/badge.svg)](https://github.com/BlackCat-art/codelens/actions/workflows/test.yml)
+
 [English](README.md)
 
 零依赖工具:把 AI 生成的 Python 项目变成人类能读的“地图”,让你不借助 AI 也能看懂代码、定位问题、手动修复。

@@ -1,5 +1,7 @@
 # CodeLens
 
+[![tests](https://github.com/BlackCat-art/codelens/actions/workflows/test.yml/badge.svg)](https://github.com/BlackCat-art/codelens/actions/workflows/test.yml)
+
 [中文说明](README.zh.md)
 
 A zero-dependency tool that turns an AI-generated Python project into a map a human can read, so you can understand the code, locate bugs, and fix them without asking an AI.
