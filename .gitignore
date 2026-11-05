@@ -7,3 +7,4 @@ venv/
 /CODELENS.md
 build/
 dist/
+*.egg-info/
