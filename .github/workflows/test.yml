@@ -34,3 +34,9 @@ jobs:
           python codelens.py --version
           python codelens.py map . -o /tmp/self.md --lang en
           python codelens.py map . -o /tmp/self.zh.md --lang zh
+
+      - name: Verify pip install
+        run: |
+          python -m pip install .
+          codelens --version
+          codelens map . -o /tmp/pip.md --lang en
