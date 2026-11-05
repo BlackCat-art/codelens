@@ -23,6 +23,28 @@ python codelens.py map /path/to/your/project -o CODELENS.md
 python codelens.py trace /path/to/your/project function_name -d 3
 ```
 
+## Example output
+
+The report below comes from a small demo "shop" project with typical AI-written problems planted on purpose. The full file is [examples/CODELENS.example.md](examples/CODELENS.example.md). Report text is currently in Chinese.
+
+Smell checklist (section 4):
+
+- `shop.services.inventory:6` swallowed exception (an `except` that does nothing hides bugs)
+- `shop.services.inventory:9` empty stub `reserve()`
+- `shop.services.orders:11` leftover `# TODO: handle out-of-stock properly`
+- `shop.services.payment:2` leftover `# placeholder: integrate real gateway`
+- `shop.services.payment:7` empty stub `refund_check()`
+- `calc_total` is defined twice (`inventory` and `pricing`), a likely duplicate implementation
+
+Trace of `check_stock`, showing how execution reaches it:
+
+```
+== shop.services.inventory.check_stock (./shop/services/inventory.py:3-7) ==
+Upstream:
+└─ shop.services.orders.create_order (./shop/services/orders.py:4)
+   └─ shop.app.main (./shop/app.py:4)
+```
+
 ## What the map contains
 
 - Entry points: modules with a `__main__` block and functions decorated as routes or commands.
@@ -44,6 +66,7 @@ Each line includes `path:line`, so you can walk the chain by hand in your editor
 
 - Python only for now.
 - Calls are matched by function name. Dynamic dispatch, callbacks, and same-named functions can cause false positives or missed edges.
+- Imports are resolved relative to the directory you pass in, so run CodeLens on your project's top-level source root.
 - It is static analysis: it knows nothing about runtime values or business intent.
 - The hotspot scoring weights are heuristic and have not been tuned on many real projects.
 

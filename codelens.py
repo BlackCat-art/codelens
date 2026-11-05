@@ -44,6 +44,13 @@ def is_stub(fn):
         if isinstance(b, ast.Raise) and "NotImplemented" in ast.dump(b): return True
     return False
 
+def resolve(names, dotted):
+    parts = dotted.split(".")
+    for i in range(len(parts), 0, -1):
+        cand = ".".join(parts[:i])
+        if cand in names: return cand
+    return None
+
 def analyze(root):
     funcs, mods, imports, issues = {}, {}, collections.defaultdict(set), []
     names = {modname(root, p) for p in py_files(root)}
@@ -56,16 +63,17 @@ def analyze(root):
             issues.append((m, 0, f"无法解析: {e}")); continue
         mods[m] = {"path": p, "doc": ast.get_docstring(tree) or "", "lines": src.count("\n") + 1, "entry": False}
         for i, line in enumerate(src.splitlines(), 1):
-            if any(t in line for t in ("TODO", "FIXME", "XXX", "placeholder", "Placeholder")):
+            if any(("# " + t) in line or ("#" + t) in line for t in ("TODO", "FIXME", "XXX", "placeholder", "Placeholder")):
                 issues.append((m, i, "遗留标记: " + line.strip()[:70]))
         for n in ast.walk(tree):
             if isinstance(n, ast.Import):
                 for a in n.names:
-                    t = next((x for x in names if a.name == x or a.name.startswith(x + ".")), None)
+                    t = resolve(names, a.name)
                     if t and t != m: imports[m].add(t)
             elif isinstance(n, ast.ImportFrom) and n.module:
-                t = next((x for x in names if n.module == x or n.module.startswith(x + ".")), None)
-                if t and t != m: imports[m].add(t)
+                for a in n.names:
+                    t = resolve(names, n.module + "." + a.name) or resolve(names, n.module)
+                    if t and t != m: imports[m].add(t)
             elif isinstance(n, ast.If) and "__main__" in ast.dump(n.test):
                 mods[m]["entry"] = True
             elif isinstance(n, ast.ExceptHandler):
