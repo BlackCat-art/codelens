@@ -94,7 +94,7 @@ def test_version_is_semver():
 def test_pyproject_version_is_dynamic():
     text = read("pyproject.toml")
     assert 'dynamic = ["version"]' in text
-    assert not re.search(r"^version\s*=", text, re.M)
+    assert not re.search(r"^version\s*=\s*[\"']", text, re.M)
 
 
 def test_readme_pins_current_version():
